@@ -1,6 +1,7 @@
 services:
   caddy:
-    image: caddy
+    image: caddy:latest
+    container_name: caddy
     ports:
       - "80:80"
       - "443:443"
@@ -15,25 +16,23 @@ services:
   bot:
     build:
       context: .
-    container_name: 'AiogramShopBot'
+    container_name: AiogramShopBot
     env_file:
       - .env
-    labels:
-      caddy: YOUR-DOMAIN-GOES-HERE
-      caddy.reverse_proxy: "bot:5000"
     depends_on:
-      - caddy
+      - redis
+      - postgres
     networks:
       - caddy
     ports:
-      - "127.0.0.1:5000:5000" # ${WEBAPP_PORT}:${WEBAPP_PORT}
+      - "127.0.0.1:5000:5000"
     volumes:
       - ./i18n:/bot/i18n
-    command: [ "python", "-u", "run.py" ]
+    command: ["python", "-u", "run.py"]
     restart: always
 
   redis:
-    image: redis:latest
+    image: redis:7-alpine
     container_name: redis
     command:
       - /bin/sh
@@ -50,22 +49,21 @@ services:
       - caddy
 
   postgres:
-    container_name: "postgres"
-    image: "postgres:18"
+    container_name: postgres
+    image: postgres:17-alpine
     env_file:
       - .env
     ports:
       - "127.0.0.1:5432:5432"
     volumes:
-      - ./postgres_data:/var/lib/postgresql
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - caddy
     restart: always
 
-
 volumes:
-  AiogramShopBot:
   caddy_data:
+  caddy_config:
   redis_data:
   postgres_data:
 
