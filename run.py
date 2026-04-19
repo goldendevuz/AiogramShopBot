@@ -36,7 +36,7 @@ main_router = Router()
 @main_router.message(CommandStart())
 @main_router.message(Command("help"))
 async def start(message: Message, command: CommandObject, session: AsyncSession, language: Language):
-    all_categories_button = types.KeyboardButton(text=get_text(language, BotEntity.USER, "all_categories"))
+    # all_categories_button = types.KeyboardButton(text=get_text(language, BotEntity.USER, "all_categories"))
     my_profile_button = types.KeyboardButton(text=get_text(language, BotEntity.USER, "my_profile"))
     faq_button = types.KeyboardButton(text=get_text(language, BotEntity.USER, "faq"))
     help_button = types.KeyboardButton(text=get_text(language, BotEntity.USER, "help"))
@@ -49,16 +49,37 @@ async def start(message: Message, command: CommandObject, session: AsyncSession,
         telegram_id=telegram_id,
         language=language
     ), command.args, session)
-    keyboard = [[all_categories_button, my_profile_button], [faq_button, help_button],
+    # keyboard = [[all_categories_button, my_profile_button], [faq_button, help_button],
+    #             [reviews_button],
+    #             [cart_button]]
+    keyboard = [[my_profile_button], [faq_button, help_button],
                 [reviews_button],
                 [cart_button]]
     if telegram_id in config.ADMIN_ID_LIST:
         keyboard.append([admin_menu_button])
     start_markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2, keyboard=keyboard)
     bot_photo_id = get_bot_photo_id()
-    await message.answer_photo(photo=bot_photo_id,
-                               caption=get_text(language, BotEntity.COMMON, "start_message"),
-                               reply_markup=start_markup)
+    # await message.answer_photo(photo=bot_photo_id,
+    #                            caption=get_text(language, BotEntity.COMMON, "start_message"),
+    #                            reply_markup=start_markup)
+
+    
+    user = message.from_user
+
+    is_premium = getattr(user, "is_premium", False)
+
+    if is_premium:
+        text = (
+            "🚀 Bot ishlamoqda 🚀\n\n"
+            "✨ Siz Telegram Premium foydalanuvchisiz"
+        )
+    else:
+        text = (
+            "🚀 Bot ishlamoqda 🚀\n\n"
+            "💡 Siz oddiy foydalanuvchisiz"
+        )
+
+    await message.answer(text, reply_markup=start_markup)
 
 
 @main_router.message(F.text.in_(KeyboardButton.get_localized_set(KeyboardButton.FAQ)), IsUserExistFilter())

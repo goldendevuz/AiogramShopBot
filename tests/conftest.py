@@ -17,8 +17,8 @@ sys.path = [
 def _build_config_module() -> ModuleType:
     config = ModuleType("config")
     currency = SimpleNamespace(
-        value="USD",
-        get_localized_text=lambda: "USD",
+        value="UZS",
+        get_localized_text=lambda: "UZS",
         get_localized_symbol=lambda: "$",
     )
     config.PAGE_ENTRIES = 8

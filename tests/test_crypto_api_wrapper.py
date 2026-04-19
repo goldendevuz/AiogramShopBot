@@ -17,7 +17,7 @@ class _FakePaymentsResource:
         return type("Payment", (), {
             "id": 11,
             "payment_type": type("PaymentType", (), {"value": "PAYMENT"})(),
-            "fiat_currency": type("FiatCurrency", (), {"value": "USD"})(),
+            "fiat_currency": type("FiatCurrency", (), {"value": "UZS"})(),
             "fiat_amount": 15.0,
             "crypto_amount": 0.001,
             "crypto_currency": type("CryptoCurrency", (), {"value": "BTC"})(),
@@ -35,7 +35,7 @@ class _FakePaymentsResource:
         return type("Payment", (), {
             "id": 12,
             "payment_type": type("PaymentType", (), {"value": "DEPOSIT"})(),
-            "fiat_currency": type("FiatCurrency", (), {"value": "USD"})(),
+            "fiat_currency": type("FiatCurrency", (), {"value": "UZS"})(),
             "fiat_amount": None,
             "crypto_amount": None,
             "crypto_currency": type("CryptoCurrency", (), {"value": "BTC"})(),
@@ -88,7 +88,7 @@ async def test_create_invoice_uses_sdk_payment_resource(monkeypatch):
 
     payment = await CryptoApiWrapper.create_invoice(ProcessingPaymentDTO(
         paymentType=PaymentType.PAYMENT,
-        fiatCurrency=Currency.USD,
+        fiatCurrency=Currency.UZS,
         fiatAmount=15.0,
         cryptoCurrency=Cryptocurrency.BTC,
         callbackUrl="https://example.com/callback",

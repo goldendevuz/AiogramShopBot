@@ -46,9 +46,13 @@ class PaymentService:
             filename=f"{payment_dto.address}.png"
         )
 
+    # @staticmethod
+    # async def __create_invoice(payment_dto: ProcessingPaymentDTO) -> ProcessingPaymentDTO:
+    #     return await CryptoApiWrapper.create_invoice(payment_dto)
+    
     @staticmethod
-    async def __create_invoice(payment_dto: ProcessingPaymentDTO) -> ProcessingPaymentDTO:
-        return await CryptoApiWrapper.create_invoice(payment_dto)
+    async def __create_invoice(payment_dto: ProcessingPaymentDTO, redis=None) -> ProcessingPaymentDTO:
+        return await CryptoApiWrapper.create_invoice(payment_dto, redis)
 
     @staticmethod
     def __request_fiat_amount(kb_builder: InlineKeyboardBuilder, language: Language, error_text: str | None = None):

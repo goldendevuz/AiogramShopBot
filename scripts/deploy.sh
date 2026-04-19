@@ -16,7 +16,7 @@ generate_secret() {
 
 validate_currency() {
   case "$1" in
-    USD|EUR|JPY|CAD|GBP) return 0 ;;
+    UZS|USD|EUR|JPY|CAD|GBP) return 0 ;;
     *) return 1 ;;
   esac
 }
@@ -149,7 +149,7 @@ while :; do
 done
 
 while :; do
-  printf "Currency (USD/EUR/JPY/CAD/GBP): "
+  printf "Currency (UZS/USD/EUR/JPY/CAD/GBP): "
   read CURRENCY
   validate_currency "$CURRENCY" && break
   echo "❌ Invalid currency"

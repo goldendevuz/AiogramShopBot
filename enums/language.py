@@ -7,6 +7,7 @@ class Language(str, Enum):
     DE = "de"
     IT = "it"
     ZH = "zh"
+    UZ = "uz"
 
     @staticmethod
     def from_locale(locale: str) -> 'Language':

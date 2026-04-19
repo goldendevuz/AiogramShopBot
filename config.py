@@ -28,7 +28,7 @@ DB_HOST = os.environ.get("DB_HOST", "postgres")
 DB_NAME = os.environ.get("POSTGRES_DB", "aiogram-shop-bot")
 PAGE_ENTRIES = int(os.environ.get("PAGE_ENTRIES", "8"))
 MULTIBOT = os.environ.get("MULTIBOT", False) == 'true'
-CURRENCY = Currency(os.environ.get("CURRENCY", "USD"))
+CURRENCY = Currency(os.environ.get("CURRENCY", "UZS"))
 KRYPTO_EXPRESS_API_KEY = os.environ.get("KRYPTO_EXPRESS_API_KEY")
 KRYPTO_EXPRESS_API_URL = os.environ.get("KRYPTO_EXPRESS_API_URL")
 KRYPTO_EXPRESS_API_SECRET = os.environ.get("KRYPTO_EXPRESS_API_SECRET")

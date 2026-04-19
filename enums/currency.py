@@ -53,6 +53,7 @@ class Currency(Enum):
     KWD = "KWD"
     RON = "RON"
     NZD = "NZD"
+    UZS = "UZS"
 
     def get_localized_symbol(self):
         return get_text(Language.EN, BotEntity.COMMON, f"{self.value.lower()}_symbol")
