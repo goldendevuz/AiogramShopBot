@@ -151,6 +151,12 @@ class PaymentService:
                 payment_lifetime=formatted
             )
             qr_code_file = PaymentService.__create_qr_code(payment_dto)
+            # ✅ Qo'shildi:
+            kb_builder.adjust(1)
+            kb_builder.button(
+                text=get_text(language, BotEntity.COMMON, "back_button"),
+                callback_data=MyProfileCallback.create(level=1)
+            )
             return InputMediaPhoto(media=qr_code_file, caption=caption), kb_builder
         else:
             message = await callback.message.edit_caption(caption=get_text(language, BotEntity.USER, "loading"))
@@ -173,4 +179,7 @@ class PaymentService:
                 payment_lifetime=formatted
             )
             qr_code_file = PaymentService.__create_qr_code(payment_dto)
+            # ✅ Qo'shildi:
+            kb_builder.adjust(1)
+            kb_builder.row(callback_data.get_back_button(language))
             return InputMediaPhoto(media=qr_code_file, caption=caption), kb_builder

@@ -36,36 +36,64 @@ main_router = Router()
 @main_router.message(CommandStart())
 @main_router.message(Command("help"))
 async def start(message: Message, command: CommandObject, session: AsyncSession, language: Language):
-    # all_categories_button = types.KeyboardButton(text=get_text(language, BotEntity.USER, "all_categories"))
-    my_profile_button = types.KeyboardButton(text=get_text(language, BotEntity.USER, "my_profile"))
-    faq_button = types.KeyboardButton(text=get_text(language, BotEntity.USER, "faq"))
-    help_button = types.KeyboardButton(text=get_text(language, BotEntity.USER, "help"))
-    admin_menu_button = types.KeyboardButton(text=get_text(language, BotEntity.ADMIN, "menu"))
-    reviews_button = types.KeyboardButton(text=get_text(language, BotEntity.USER, "reviews"))
-    cart_button = types.KeyboardButton(text=get_text(language, BotEntity.USER, "cart"))
+
     telegram_id = message.from_user.id
-    await UserService.create_if_not_exist(UserDTO(
-        telegram_username=message.from_user.username,
-        telegram_id=telegram_id,
-        language=language
-    ), command.args, session)
-    # keyboard = [[all_categories_button, my_profile_button], [faq_button, help_button],
-    #             [reviews_button],
-    #             [cart_button]]
-    keyboard = [[my_profile_button], [faq_button, help_button],
-                [reviews_button],
-                [cart_button]]
-    if telegram_id in config.ADMIN_ID_LIST:
-        keyboard.append([admin_menu_button])
-    start_markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2, keyboard=keyboard)
-    bot_photo_id = get_bot_photo_id()
-    # await message.answer_photo(photo=bot_photo_id,
-    #                            caption=get_text(language, BotEntity.COMMON, "start_message"),
-    #                            reply_markup=start_markup)
+    is_admin = telegram_id in config.ADMIN_ID_LIST
 
-    
+    # --- Buttons ---
+    my_profile_button = types.KeyboardButton(
+        text=get_text(language, BotEntity.USER, "my_profile")
+    )
+    faq_button = types.KeyboardButton(
+        text=get_text(language, BotEntity.USER, "faq")
+    )
+    help_button = types.KeyboardButton(
+        text=get_text(language, BotEntity.USER, "help")
+    )
+    reviews_button = types.KeyboardButton(
+        text=get_text(language, BotEntity.USER, "reviews")
+    )
+    cart_button = types.KeyboardButton(
+        text=get_text(language, BotEntity.USER, "cart")
+    )
+
+    admin_menu_button = types.KeyboardButton(
+        text=get_text(language, BotEntity.ADMIN, "menu")
+    )
+
+    # --- Common user keyboard ---
+    user_keyboard = []
+
+    admin_keyboard = [
+        [my_profile_button],
+        [faq_button, help_button],
+        [reviews_button],
+        [cart_button],
+        [admin_menu_button],
+    ]
+
+    # --- Admin-only additions ---
+    if is_admin:
+        user_keyboard.extend(admin_keyboard)
+
+    start_markup = types.ReplyKeyboardMarkup(
+        keyboard=user_keyboard,
+        resize_keyboard=True
+    )
+
+    # --- User creation ---
+    await UserService.create_if_not_exist(
+        UserDTO(
+            telegram_username=message.from_user.username,
+            telegram_id=telegram_id,
+            language=language
+        ),
+        command.args,
+        session
+    )
+
+    # --- Premium logic ---
     user = message.from_user
-
     is_premium = getattr(user, "is_premium", False)
 
     if is_premium:

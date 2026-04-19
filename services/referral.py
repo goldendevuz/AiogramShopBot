@@ -16,6 +16,7 @@ from repositories.deposit import DepositRepository
 from repositories.referral import ReferralRepository
 from repositories.user import UserRepository
 from utils.utils import get_text
+from utils.currency_formatter import fmt
 
 
 class ReferralService:
@@ -130,9 +131,10 @@ class ReferralService:
             )
         kb_builder = InlineKeyboardBuilder()
         kb_builder.row(callback_data.get_back_button(language, 0))
+        
         msg = get_text(language, BotEntity.USER, "referral_statistics_message").format(
-            user_total_deposits=deposits_sum,
-            min_referrer_total_deposit=config.MIN_REFERRER_TOTAL_DEPOSIT,
+            user_total_deposits=fmt(deposits_sum),
+            min_referrer_total_deposit=fmt(config.MIN_REFERRER_TOTAL_DEPOSIT),
             referral_access_status=access_emoji,
             referral_bonus_percent=config.REFERRAL_BONUS_PERCENT,
             referral_bonus_deposit_limit=config.REFERRAL_BONUS_DEPOSIT_LIMIT,
@@ -142,8 +144,8 @@ class ReferralService:
             referrer_bonus_cap_percent=config.REFERRER_BONUS_CAP_PERCENT,
             total_bonus_cap_percent=config.TOTAL_BONUS_CAP_PERCENT,
             referrals_count=referrals_qty,
-            referral_bonus_earned=referral_bonus_sum,
-            referrer_bonus_earned=referrer_bonus_sum,
+            referral_bonus_earned=fmt(referral_bonus_sum),
+            referrer_bonus_earned=fmt(referrer_bonus_sum),
             currency_sym=config.CURRENCY.get_localized_symbol()
         )
         msg = "".join([msg, referral_code_section])
