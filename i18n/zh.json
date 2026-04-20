@@ -163,6 +163,8 @@
     "start_message": "👋 您好",
     "usd_symbol": "$",
     "usd_text": "USD",
+    "uzs_symbol": "so'm",
+    "uzs_text": "UZS",
     "eur_symbol": "€",
     "eur_text": "EUR",
     "eth_top_up": "ETH",
@@ -317,7 +319,7 @@
     "help_string": "🤝 客服支持",
     "insufficient_funds": "⚠️ 余额不足！",
     "my_profile": "👤 我的资料",
-    "my_profile_msg": "👤 <b>您的资料\nID：</b> <code>{telegram_id}</code>\n\n<b>您的 {currency_text} 余额：</b>\n{fiat_balance}{currency_sym}",
+    "my_profile_msg": "👤 <b>您的资料\nID：</b> <code>{telegram_id}</code>\n\n<b>您的 {currency_text} 余额：</b>\n{fiat_balance} {currency_sym}",
     "no_categories": "⚠️ 暂无可用分类",
     "no_purchases": "⚠️ 您还没有任何购买记录",
     "out_of_stock": "⚠️<b>以下商品库存不足或已售罄：</b>\n\n",
@@ -384,12 +386,12 @@
     "purchase_history_msg_base": "🔷 购买ID: <code>{buy_id}</code>\n📅 购买时间: <code>{buy_datetime}</code>\n💵 支付的法币金额: <code>{currency_sym}{fiat_amount:.2f}</code>\n🎟️ 折扣: <code>{currency_sym}{discount_amount:.2F}</code>\n🟡 状态: {status}",
     "referrer_notification": "💰 您已获得 {currency_sym}{referrer_bonus:.2f} 的邀请系统参与奖金。",
     "notification_new_deposit": "💰 您的余额已成功充值 {fiat_amount:.2f} {currency_text}。\n💰 您参与邀请系统的奖金为: {referral_bonus:.2f} {currency_text}\n支付ID {payment_id}。",
-    "referral_statistics_message": "<b>✨ 邀请计划</b>\n\n邀请朋友并在机器人内赚取奖金余额。\n奖金可用于购买数字和实体商品。\n\n<b>🔓 邀请权限</b>\n您的总存款: <b>{currency_sym}{user_total_deposits:.2f}</b>  \n解锁邀请所需: <b>{currency_sym}{min_referrer_total_deposit:.2f}</b>\n\n状态:\n<b>{referral_access_status}</b>\n\n<b>🎁 您的朋友获得什么</b>\n• 每次存款 <b>{referral_bonus_percent}%</b> 的奖金  \n• 适用于前 <b>{referral_bonus_deposit_limit}</b> 次存款  \n• 最高奖金上限: 存款的 <b>{referral_bonus_cap_percent}%</b>  \n\n<b>💰 您作为邀请人获得什么</b>\n• 每次被邀请人存款的 <b>{referrer_bonus_percent}%</b>  \n• 适用于每个被邀请人的前 <b>{referrer_bonus_deposit_limit}</b> 次存款  \n• 每个被邀请人最高奖金上限: <b>{referrer_bonus_cap_percent}%</b>  \n\n<b>全局奖金上限:</b>  \n总奖金（您 + 被邀请人）永远不会超过被邀请人存款的 <b>{total_bonus_cap_percent}%</b>\n\n<b>📊 您的邀请统计</b>\n\n👥 已邀请人数: <b>{referrals_count}</b>  \n🎁 作为被邀请人获得的奖金: <b>{currency_sym}{referral_bonus_earned:.2f}</b>  \n💰 作为邀请人获得的奖金: <b>{currency_sym}{referrer_bonus_earned:.2f}</b>",
+    "referral_statistics_message": "<b>✨ 邀请计划</b>\n\n邀请朋友并在机器人内赚取奖金余额。\n奖金可用于购买数字和实体商品。\n\n<b>🔓 邀请权限</b>\n您的总存款: <b>{user_total_deposits} {currency_sym}</b>  \n解锁邀请所需: <b>{min_referrer_total_deposit} {currency_sym}</b>\n\n状态:\n<b>{referral_access_status}</b>\n\n<b>🎁 您的朋友获得什么</b>\n• 每次存款 <b>{referral_bonus_percent}%</b> 的奖金  \n• 适用于前 <b>{referral_bonus_deposit_limit}</b> 次存款  \n• 最高奖金上限: 存款的 <b>{referral_bonus_cap_percent}%</b>  \n\n<b>💰 您作为邀请人获得什么</b>\n• 每次被邀请人存款的 <b>{referrer_bonus_percent}%</b>  \n• 适用于每个被邀请人的前 <b>{referrer_bonus_deposit_limit}</b> 次存款  \n• 每个被邀请人最高奖金上限: <b>{referrer_bonus_cap_percent}%</b>  \n\n<b>全局奖金上限:</b>  \n总奖金（您 + 被邀请人）永远不会超过被邀请人存款的 <b>{total_bonus_cap_percent}%</b>\n\n<b>📊 您的邀请统计</b>\n\n👥 已邀请人数: <b>{referrals_count}</b>  \n🎁 作为被邀请人获得的奖金: <b>{referral_bonus_earned} {currency_sym}</b>  \n💰 作为邀请人获得的奖金: <b>{referrer_bonus_earned} {currency_sym}</b>",
     "referral_code_section": "\n\n<b>🔗 您的邀请链接</b>\nt.me/{bot_username}?start={referral_code}\n分享您的链接，共同成长 🚀",
     "referral_button": "✨ 邀请系统",
     "top_up_balance_deposit_msg": "💵 <b>请向地址存入您想要的 {crypto_name} 金额，为机器人账户充值。</b>\n\n支付状态: {status}\n支付有效期至 {payment_lifetime}。\n\n<b>重要</b>\n<i>每次存款都会分配一个唯一的 {crypto_name} 地址\n转账后5分钟内完成充值。\n\n余额成功刷新后，您将收到机器人的通知。</i>\n\n<b>您的 {crypto_name} 地址\n</b><code>{addr}</code>",
     "top_up_balance_payment_msg": "💵 <b>请准确发送 <code>{crypto_amount}</code> {crypto_name}</b>\n\n⚠️ <b>不要少发。</b>\n⚠️ <b>不要多发。</b>\n⚠️ <b>仅接受准确金额。</b>\n\n❌ 不允许少付。\n❌ 不允许多付。\n❗ 如果您发送的金额不是 <code>{crypto_amount}</code> {crypto_name}，您的资金将会<b>永久丢失</b>，并且<b>无法找回</b>。\n\n支付状态: {status}\n⏳ 有效期至: {payment_lifetime}\n\n<b>充值地址：</b>\n<code>{addr}</code>\n\nℹ️ 这是仅为本次支付创建的唯一 {crypto_name} 地址。\n✅ 交易到账后 5 分钟内会为您充值余额。",
-    "top_up_balance_request_fiat": "💵 <b>请输入您希望充值的 <u>{currency_text}</u> 金额\n⚠️ 注意！最低存款金额为 5 {currency_text}</b>",
+    "top_up_balance_request_fiat": "💵 <b>请输入您希望充值的 <u>{currency_text}</u> 金额\n⚠️ 注意！最低存款金额为 100 000 {currency_text}</b>",
     "top_up_balance_invalid_fiat_amount": "⚠️ <b>金额无效。</b>\n请输入一个正数金额，范围从 <code>5</code> 到小于 <code>1000000</code> {currency_text}，最多保留 2 位小数。"
   }
 }

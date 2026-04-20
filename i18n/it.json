@@ -163,6 +163,8 @@
     "start_message": "👋 Ciao",
     "usd_symbol": "$",
     "usd_text": "USD",
+    "uzs_symbol": "so'm",
+    "uzs_text": "UZS",
     "eur_symbol": "€",
     "eur_text": "EUR",
     "eth_top_up": "ETH",
@@ -317,7 +319,7 @@
     "help_string": "🤝 Supporto",
     "insufficient_funds": "⚠️ Fondi insufficienti!",
     "my_profile": "👤 Il mio profilo",
-    "my_profile_msg": "👤 <b>Il tuo profilo\nID:</b> <code>{telegram_id}</code>\n\n<b>Il tuo saldo in {currency_text}:</b>\n{fiat_balance}{currency_sym}",
+    "my_profile_msg": "👤 <b>Il tuo profilo\nID:</b> <code>{telegram_id}</code>\n\n<b>Il tuo saldo in {currency_text}:</b>\n{fiat_balance} {currency_sym}",
     "no_categories": "⚠️ Nessuna categoria disponibile",
     "no_purchases": "⚠️ Non hai ancora effettuato acquisti",
     "out_of_stock": "⚠️<b>I seguenti articoli sono esauriti o insufficienti:</b>\n\n",
@@ -384,12 +386,12 @@
     "purchase_history_msg_base": "🔷 ID Acquisto: <code>{buy_id}</code>\n📅 Data/ora acquisto: <code>{buy_datetime}</code>\n💵 Prezzo fiat pagato: <code>{currency_sym}{fiat_amount:.2f}</code>\n🎟️ Sconto: <code>{currency_sym}{discount_amount:.2F}</code>\n🟡 Stato: {status}",
     "referrer_notification": "💰 Ti è stato accreditato un bonus di {currency_sym}{referrer_bonus:.2f} per la partecipazione al sistema di referral.",
     "notification_new_deposit": "💰 Il tuo saldo è stato ricaricato con successo di {fiat_amount:.2f} {currency_text}.\n💰 Il tuo bonus per partecipare al sistema di referral è: {referral_bonus:.2f} {currency_text}\nID pagamento {payment_id}.",
-    "referral_statistics_message": "<b>✨ Programma di Referral</b>\n\nInvita amici e guadagna saldo bonus nel bot.\nI bonus possono essere usati per acquistare prodotti digitali e fisici.\n\n<b>🔓 Accesso Referral</b>\nI tuoi depositi totali: <b>{currency_sym}{user_total_deposits:.2f}</b>  \nRichiesto per sbloccare referral: <b>{currency_sym}{min_referrer_total_deposit:.2f}</b>\n\nStato:\n<b>{referral_access_status}</b>\n\n<b>🎁 Cosa riceve il tuo amico</b>\n• <b>{referral_bonus_percent}%</b> di bonus su ogni deposito  \n• Si applica ai primi <b>{referral_bonus_deposit_limit}</b> depositi  \n• Limite massimo bonus: <b>{referral_bonus_cap_percent}%</b> dei suoi depositi  \n\n<b>💰 Cosa ricevi tu come referrer</b>\n• <b>{referrer_bonus_percent}%</b> da ogni deposito referral  \n• Si applica ai primi <b>{referrer_bonus_deposit_limit}</b> depositi per referral  \n• Limite massimo bonus: <b>{referrer_bonus_cap_percent}%</b> per referral  \n\n<b>Limite bonus globale:</b>  \nI bonus totali (tu + referral) non supereranno mai <b>{total_bonus_cap_percent}%</b> dei depositi del referral\n\n<b>📊 Le tue Statistiche di Referral</b>\n\n👥 Referral invitati: <b>{referrals_count}</b>  \n🎁 Bonus guadagnati come referral: <b>{currency_sym}{referral_bonus_earned:.2f}</b>  \n💰 Bonus guadagnati come referrer: <b>{currency_sym}{referrer_bonus_earned:.2f}</b>",
+    "referral_statistics_message": "<b>✨ Programma di Referral</b>\n\nInvita amici e guadagna saldo bonus nel bot.\nI bonus possono essere usati per acquistare prodotti digitali e fisici.\n\n<b>🔓 Accesso Referral</b>\nI tuoi depositi totali: <b>{user_total_deposits} {currency_sym}</b>  \nRichiesto per sbloccare referral: <b>{min_referrer_total_deposit} {currency_sym}</b>\n\nStato:\n<b>{referral_access_status}</b>\n\n<b>🎁 Cosa riceve il tuo amico</b>\n• <b>{referral_bonus_percent}%</b> di bonus su ogni deposito  \n• Si applica ai primi <b>{referral_bonus_deposit_limit}</b> depositi  \n• Limite massimo bonus: <b>{referral_bonus_cap_percent}%</b> dei suoi depositi  \n\n<b>💰 Cosa ricevi tu come referrer</b>\n• <b>{referrer_bonus_percent}%</b> da ogni deposito referral  \n• Si applica ai primi <b>{referrer_bonus_deposit_limit}</b> depositi per referral  \n• Limite massimo bonus: <b>{referrer_bonus_cap_percent}%</b> per referral  \n\n<b>Limite bonus globale:</b>  \nI bonus totali (tu + referral) non supereranno mai <b>{total_bonus_cap_percent}%</b> dei depositi del referral\n\n<b>📊 Le tue Statistiche di Referral</b>\n\n👥 Referral invitati: <b>{referrals_count}</b>  \n🎁 Bonus guadagnati come referral: <b>{referral_bonus_earned} {currency_sym}</b>  \n💰 Bonus guadagnati come referrer: <b>{referrer_bonus_earned} {currency_sym}</b>",
     "referral_code_section": "\n\n<b>🔗 Il tuo Link di Referral</b>\nt.me/{bot_username}?start={referral_code}\nCondividi il tuo link e cresci insieme 🚀",
     "referral_button": "✨ Sistema di Referral",
     "top_up_balance_deposit_msg": "💵 <b>Deposita all'indirizzo l'importo desiderato in {crypto_name} per ricaricare il saldo del bot.</b>\n\nStato pagamento: {status}\nPagamento valido fino a {payment_lifetime}.\n\n<b>Importante</b>\n<i>Viene assegnato un indirizzo {crypto_name} unico per ogni deposito\nLa ricarica avviene entro 5 minuti dal trasferimento.\n\nDopo un aggiornamento riuscito del saldo, riceverai una notifica dal bot.</i>\n\n<b>Il tuo indirizzo {crypto_name}\n</b><code>{addr}</code>",
     "top_up_balance_payment_msg": "💵 <b>Invia esattamente <code>{crypto_amount}</code> {crypto_name}</b>\n\n⚠️ <b>NON INVIARE DI MENO.</b>\n⚠️ <b>NON INVIARE DI PIÙ.</b>\n⚠️ <b>È ACCETTATO SOLO L'IMPORTO ESATTO.</b>\n\n❌ Il pagamento insufficiente è vietato.\n❌ Il pagamento in eccesso è vietato.\n❗ Se invii un importo diverso da <code>{crypto_amount}</code> {crypto_name}, i tuoi fondi saranno <b>persi definitivamente</b> e <b>non potranno essere recuperati</b>.\n\nStato pagamento: {status}\n⏳ Valido fino a: {payment_lifetime}\n\n<b>Indirizzo di deposito:</b>\n<code>{addr}</code>\n\nℹ️ Questo è un indirizzo {crypto_name} univoco creato solo per questo pagamento.\n✅ Il saldo verrà accreditato entro 5 minuti dalla ricezione della transazione.",
-    "top_up_balance_request_fiat": "💵 <b>Per favore, invia l'importo che desideri ricaricare in <u>{currency_text}</u>\n⚠️ Attenzione! Deposito minimo 5 {currency_text}</b>",
+    "top_up_balance_request_fiat": "💵 <b>Per favore, invia l'importo che desideri ricaricare in <u>{currency_text}</u>\n⚠️ Attenzione! Deposito minimo 100 000 {currency_text}</b>",
     "top_up_balance_invalid_fiat_amount": "⚠️ <b>Importo non valido.</b>\nInvia un importo positivo da <code>5</code> fino a meno di <code>1000000</code> {currency_text} con al massimo 2 decimali."
   }
 }

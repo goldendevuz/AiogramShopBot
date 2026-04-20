@@ -33,7 +33,7 @@ Full documentation for deployment, configuration, user flows, admin flows, refer
 | `NGROK_TOKEN` | Ngrok token for development tunnel mode. | No recommended value |
 | `PAGE_ENTRIES` | Pagination size. | `8` |
 | `MULTIBOT` | Enables experimental multibot mode. Accepts `"true"` or `"false"`. | `"false"` |
-| `CURRENCY` | Fiat currency used in the bot. | `"USD"`, `"EUR"`, `"JPY"`, `"CAD"`, or `"GBP"` |
+| `CURRENCY` | Fiat currency used in the bot. | `"UZS"`, `"USD"`, `"EUR"`, `"JPY"`, `"CAD"`, or `"GBP"` |
 | `RUNTIME_ENVIRONMENT` | `"dev"` uses ngrok, `"prod"` uses reverse proxy flow. | `"prod"` or `"dev"` |
 | `WEBHOOK_SECRET_TOKEN` | Protects Telegram webhook requests from spoofing. | Any strong value |
 | `KRYPTO_EXPRESS_API_KEY` | API key from KryptoExpress. | No recommended value |
@@ -107,7 +107,7 @@ POSTGRES_DB="aiogram-shop-bot"
 NGROK_TOKEN="NGROK_TOKEN_HERE"
 PAGE_ENTRIES="8"
 MULTIBOT="false"
-CURRENCY="USD"
+CURRENCY="UZS"
 RUNTIME_ENVIRONMENT="PROD"
 WEBHOOK_SECRET_TOKEN="1234567890"
 KRYPTO_EXPRESS_API_KEY="API_KEY_HERE"

@@ -46,9 +46,13 @@ class PaymentService:
             filename=f"{payment_dto.address}.png"
         )
 
+    # @staticmethod
+    # async def __create_invoice(payment_dto: ProcessingPaymentDTO) -> ProcessingPaymentDTO:
+    #     return await CryptoApiWrapper.create_invoice(payment_dto)
+    
     @staticmethod
-    async def __create_invoice(payment_dto: ProcessingPaymentDTO) -> ProcessingPaymentDTO:
-        return await CryptoApiWrapper.create_invoice(payment_dto)
+    async def __create_invoice(payment_dto: ProcessingPaymentDTO, redis=None) -> ProcessingPaymentDTO:
+        return await CryptoApiWrapper.create_invoice(payment_dto, redis)
 
     @staticmethod
     def __request_fiat_amount(kb_builder: InlineKeyboardBuilder, language: Language, error_text: str | None = None):
@@ -147,6 +151,12 @@ class PaymentService:
                 payment_lifetime=formatted
             )
             qr_code_file = PaymentService.__create_qr_code(payment_dto)
+            # ✅ Qo'shildi:
+            kb_builder.adjust(1)
+            kb_builder.button(
+                text=get_text(language, BotEntity.COMMON, "back_button"),
+                callback_data=MyProfileCallback.create(level=1)
+            )
             return InputMediaPhoto(media=qr_code_file, caption=caption), kb_builder
         else:
             message = await callback.message.edit_caption(caption=get_text(language, BotEntity.USER, "loading"))
@@ -169,4 +179,7 @@ class PaymentService:
                 payment_lifetime=formatted
             )
             qr_code_file = PaymentService.__create_qr_code(payment_dto)
+            # ✅ Qo'shildi:
+            kb_builder.adjust(1)
+            kb_builder.row(callback_data.get_back_button(language))
             return InputMediaPhoto(media=qr_code_file, caption=caption), kb_builder

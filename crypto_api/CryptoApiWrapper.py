@@ -9,6 +9,13 @@ from enums.withdraw_type import WithdrawType
 from models.payment import ProcessingPaymentDTO
 from models.withdrawal import WithdrawalDTO
 
+# UZS → USD konvertatsiya yordamchisi (yangi fayl: uzs_converter.py)
+from utils.uzs_converter import uzs_to_usd, usd_to_uzs
+
+# KryptoExpress UZS ni qabul qilmaydi, shuning uchun USD ishlatamiz
+_UZS = Currency.UZS if hasattr(Currency, "UZS") else None
+_SDK_USD = KryptoExpressFiatCurrency("USD")
+
 
 class CryptoApiWrapper:
     @staticmethod
@@ -21,6 +28,9 @@ class CryptoApiWrapper:
 
     @staticmethod
     def _map_fiat_to_sdk(currency: Currency) -> KryptoExpressFiatCurrency:
+        # UZS SDK da yo'q — USD bilan almashtiramiz
+        if _UZS and currency == _UZS:
+            return _SDK_USD
         return KryptoExpressFiatCurrency(currency.value)
 
     @staticmethod
@@ -64,40 +74,66 @@ class CryptoApiWrapper:
         )
 
     @staticmethod
-    async def create_invoice(payment_dto: ProcessingPaymentDTO) -> ProcessingPaymentDTO:
+    async def create_invoice(payment_dto: ProcessingPaymentDTO, redis=None) -> ProcessingPaymentDTO:
+        fiat_currency = payment_dto.fiatCurrency
+        fiat_amount = payment_dto.fiatAmount
+
+        # UZS bo'lsa — USD ga o'girib yuboramiz
+        is_uzs = _UZS and fiat_currency == _UZS
+        if is_uzs and fiat_amount is not None:
+            fiat_amount = await uzs_to_usd(fiat_amount, redis)
+            sdk_fiat = _SDK_USD
+        else:
+            sdk_fiat = CryptoApiWrapper._map_fiat_to_sdk(fiat_currency)
+
         async with CryptoApiWrapper._build_client() as client:
             if payment_dto.paymentType == PaymentType.PAYMENT:
                 payment = await client.payments.create_payment(
                     crypto_currency=CryptoApiWrapper._map_crypto_to_sdk(payment_dto.cryptoCurrency),
-                    fiat_currency=CryptoApiWrapper._map_fiat_to_sdk(payment_dto.fiatCurrency),
-                    fiat_amount=payment_dto.fiatAmount,
+                    fiat_currency=sdk_fiat,
+                    fiat_amount=fiat_amount,
                     callback_url=payment_dto.callbackUrl,
                     callback_secret=payment_dto.callbackSecret,
                 )
             else:
                 payment = await client.payments.create_deposit(
                     crypto_currency=CryptoApiWrapper._map_crypto_to_sdk(payment_dto.cryptoCurrency),
-                    fiat_currency=CryptoApiWrapper._map_fiat_to_sdk(payment_dto.fiatCurrency),
+                    fiat_currency=sdk_fiat,
                     callback_url=payment_dto.callbackUrl,
                     callback_secret=payment_dto.callbackSecret,
                 )
         return CryptoApiWrapper._build_processing_payment_dto(payment)
 
     @staticmethod
-    async def get_crypto_prices() -> dict:
+    async def get_crypto_prices(redis=None) -> dict:
+        # UZS bo'lsa — APIga USD so'raymiz, natijani UZS ga o'giramiz
+        is_uzs = _UZS and config.CURRENCY == _UZS
+
+        request_currency = _SDK_USD if is_uzs else CryptoApiWrapper._map_fiat_to_sdk(config.CURRENCY)
+
         async with CryptoApiWrapper._build_client() as client:
             prices_response = await client.currencies.get_prices(
                 crypto_currencies=[
                     CryptoApiWrapper._map_crypto_to_sdk(cryptocurrency)
                     for cryptocurrency in Cryptocurrency
                 ],
-                fiat_currency=CryptoApiWrapper._map_fiat_to_sdk(config.CURRENCY),
+                fiat_currency=request_currency,
             )
+
         prices = {}
+        # Fiat kalit har doim config.CURRENCY.value (masalan "uzs")
         fiat_key = config.CURRENCY.value.lower()
+
         for price in prices_response.prices:
             internal_currency = CryptoApiWrapper._map_crypto_from_sdk(price.crypto_currency)
-            prices[internal_currency.get_coingecko_name()] = {fiat_key: price.price}
+            raw_price = price.price
+
+            # USD da kelgan narxni UZS ga o'giramiz
+            if is_uzs:
+                raw_price = await usd_to_uzs(raw_price, redis)
+
+            prices[internal_currency.get_coingecko_name()] = {fiat_key: raw_price}
+
         return prices
 
     @staticmethod
