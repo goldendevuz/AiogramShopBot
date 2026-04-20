@@ -66,9 +66,8 @@ async def start(message: Message, command: CommandObject, session: AsyncSession,
 
     admin_keyboard = [
         [my_profile_button],
+        [reviews_button, cart_button],
         [faq_button, help_button],
-        [reviews_button],
-        [cart_button],
         [admin_menu_button],
     ]
 
