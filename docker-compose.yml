@@ -1,67 +1,80 @@
 services:
   caddy:
-    image: caddy:latest
+    image: caddy:2-alpine
     container_name: caddy
     ports:
       - "80:80"
       - "443:443"
     networks:
-      - caddy
+      - internal
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
-    restart: always
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
 
   bot:
     build:
       context: .
-    container_name: AiogramShopBot
+    container_name: bot
     env_file:
       - .env
     depends_on:
       - redis
       - postgres
     networks:
-      - caddy
-    ports:
-      - "127.0.0.1:5000:5000"
+      - internal
     volumes:
       - ./i18n:/bot/i18n
     command: ["python", "-u", "run.py"]
-    restart: always
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 200M
+        reservations:
+          memory: 50M
 
   redis:
     image: redis:7-alpine
     container_name: redis
-    command:
-      - /bin/sh
-      - -c
-      - redis-server --requirepass "$${REDIS_PASSWORD:?REDIS_PASSWORD variable is not set}"
-    ports:
-      - "127.0.0.1:6379:6379"
-    env_file:
-      - .env
+    command: >
+      redis-server
+      --requirepass ${REDIS_PASSWORD}
+      --maxmemory 100mb
+      --maxmemory-policy allkeys-lru
+      --save ""
+      --appendonly no
+    networks:
+      - internal
     volumes:
       - redis_data:/data
-    restart: always
-    networks:
-      - caddy
+    restart: unless-stopped
 
   postgres:
     image: postgres:17-alpine
     container_name: postgres
     env_file:
       - .env
-    ports:
-      - "127.0.0.1:5432:5432"
+    networks:
+      - internal
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - caddy
-    restart: always
+    restart: unless-stopped
+    shm_size: 128mb
+    deploy:
+      resources:
+        limits:
+          memory: 300M
+        reservations:
+          memory: 100M
 
 volumes:
   redis_data:
   postgres_data:
+  caddy_data:
+  caddy_config:
 
 networks:
-  caddy:
+  internal:
+    driver: bridge
