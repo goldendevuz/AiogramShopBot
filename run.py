@@ -12,6 +12,7 @@ from enums.bot_entity import BotEntity
 from enums.keyboard_button import KeyboardButton
 from enums.language import Language
 from handlers.common.review_management import review_management_router
+from handlers.common.download import download_router
 from middleware.database import DBSessionMiddleware
 from middleware.language import I18nMiddleware
 from middleware.throttling_middleware import ThrottlingMiddleware
@@ -153,7 +154,8 @@ users_routers.include_routers(
     all_categories_router,
     my_profile_router,
     cart_router,
-    review_management_router
+    review_management_router,
+    download_router,
 )
 users_routers.message.middleware(throttling_middleware)
 users_routers.callback_query.middleware(throttling_middleware)

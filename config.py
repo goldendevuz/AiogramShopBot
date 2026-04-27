@@ -1,61 +1,87 @@
-import os
-
-from dotenv import load_dotenv
+from decouple import config, Csv
 
 from enums.currency import Currency
 from enums.runtime_environment import RuntimeEnvironment
 from utils.utils import get_sslipio_external_url, start_ngrok, hash_password
 
-load_dotenv(".env.bot.dev")
-RUNTIME_ENVIRONMENT = RuntimeEnvironment(os.environ.get("RUNTIME_ENVIRONMENT"))
+# CORE ENV
+RUNTIME_ENVIRONMENT = RuntimeEnvironment(config("RUNTIME_ENVIRONMENT"))
+
 if RUNTIME_ENVIRONMENT == RuntimeEnvironment.DEV:
     WEBHOOK_HOST = start_ngrok()
 else:
     WEBHOOK_HOST = get_sslipio_external_url()
-WEBHOOK_PATH = os.environ.get("WEBHOOK_PATH", "/")
-WEBAPP_HOST = os.environ.get("WEBAPP_HOST", "0.0.0.0")
-WEBAPP_PORT = int(os.environ.get("WEBAPP_PORT", "5000"))
+
+WEBHOOK_PATH = config("WEBHOOK_PATH", default="/")
+WEBAPP_HOST = config("WEBAPP_HOST", default="0.0.0.0")
+WEBAPP_PORT = config("WEBAPP_PORT", default=5000, cast=int)
+
 WEBHOOK_URL = f"{WEBHOOK_HOST}{WEBHOOK_PATH}"
-TOKEN = os.environ.get("TOKEN")
-ADMIN_ID_LIST = os.environ.get("ADMIN_ID_LIST").split(',')
-ADMIN_ID_LIST = [int(admin_id) for admin_id in ADMIN_ID_LIST]
-SUPPORT_LINK = os.environ.get("SUPPORT_LINK")
+
+TOKEN = config("TOKEN")
+
+ADMIN_ID_LIST = config("ADMIN_ID_LIST", cast=Csv(int))
+
+SUPPORT_LINK = config("SUPPORT_LINK", default=None)
+
 # POSTGRESQL
-DB_USER = os.environ.get("POSTGRES_USER", "postgres")
-DB_PASS = os.environ.get("POSTGRES_PASSWORD")
-DB_PORT = int(os.environ.get("DB_PORT", "5432"))
-DB_HOST = os.environ.get("DB_HOST", "postgres")
-DB_NAME = os.environ.get("POSTGRES_DB", "aiogram-shop-bot")
-PAGE_ENTRIES = int(os.environ.get("PAGE_ENTRIES", "8"))
-MULTIBOT = os.environ.get("MULTIBOT", False) == 'true'
-CURRENCY = Currency(os.environ.get("CURRENCY", "UZS"))
-KRYPTO_EXPRESS_API_KEY = os.environ.get("KRYPTO_EXPRESS_API_KEY")
-KRYPTO_EXPRESS_API_URL = os.environ.get("KRYPTO_EXPRESS_API_URL")
-KRYPTO_EXPRESS_API_SECRET = os.environ.get("KRYPTO_EXPRESS_API_SECRET")
-WEBHOOK_SECRET_TOKEN = os.environ.get("WEBHOOK_SECRET_TOKEN")
-REDIS_HOST = os.environ.get("REDIS_HOST", "redis")
-REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD")
-TELEGRAM_PROXY_URL = os.environ.get("TELEGRAM_PROXY_URL")
-# VARIABLES FOR CRYPTO FORWARDING
-CRYPTO_FORWARDING_MODE = os.environ.get("CRYPTO_FORWARDING_MODE", False) == 'true'
-BTC_FORWARDING_ADDRESS = os.environ.get("BTC_FORWARDING_ADDRESS")
-LTC_FORWARDING_ADDRESS = os.environ.get("LTC_FORWARDING_ADDRESS")
-ETH_FORWARDING_ADDRESS = os.environ.get("ETH_FORWARDING_ADDRESS")
-SOL_FORWARDING_ADDRESS = os.environ.get("SOL_FORWARDING_ADDRESS")
-BNB_FORWARDING_ADDRESS = os.environ.get("BNB_FORWARDING_ADDRESS")
-DOGE_FORWARDING_ADDRESS = os.environ.get("DOGE_FORWARDING_ADDRESS")
-# VARIABLES FOR THE REFERRAL SYSTEM
-MIN_REFERRER_TOTAL_DEPOSIT = int(os.environ.get("MIN_REFERRER_TOTAL_DEPOSIT", "500"))
-REFERRAL_BONUS_PERCENT = float(os.environ.get("REFERRAL_BONUS_PERCENT", "5"))
-REFERRAL_BONUS_DEPOSIT_LIMIT = int(os.environ.get("REFERRAL_BONUS_DEPOSIT_LIMIT", "3"))
-REFERRER_BONUS_PERCENT = float(os.environ.get("REFERRER_BONUS_PERCENT", "3"))
-REFERRER_BONUS_DEPOSIT_LIMIT = int(os.environ.get("REFERRER_BONUS_DEPOSIT_LIMIT", "5"))
-REFERRAL_BONUS_CAP_PERCENT = float(os.environ.get("REFERRAL_BONUS_CAP_PERCENT", "7"))
-REFERRER_BONUS_CAP_PERCENT = float(os.environ.get("REFERRER_BONUS_CAP_PERCENT", "7"))
-TOTAL_BONUS_CAP_PERCENT = float(os.environ.get("TOTAL_BONUS_CAP_PERCENT", "12"))
+DB_USER = config("POSTGRES_USER", default="postgres")
+DB_PASS = config("POSTGRES_PASSWORD")
+DB_PORT = config("DB_PORT", default=5432, cast=int)
+DB_HOST = config("DB_HOST", default="postgres")
+DB_NAME = config("POSTGRES_DB", default="aiogram-shop-bot")
+
+PAGE_ENTRIES = config("PAGE_ENTRIES", default=8, cast=int)
+
+MULTIBOT = config("MULTIBOT", default=False, cast=bool)
+
+CURRENCY = Currency(config("CURRENCY", default="UZS"))
+
+# KRYPTO EXPRESS
+KRYPTO_EXPRESS_API_KEY = config("KRYPTO_EXPRESS_API_KEY", default=None)
+KRYPTO_EXPRESS_API_URL = config("KRYPTO_EXPRESS_API_URL", default=None)
+KRYPTO_EXPRESS_API_SECRET = config("KRYPTO_EXPRESS_API_SECRET", default=None)
+
+WEBHOOK_SECRET_TOKEN = config("WEBHOOK_SECRET_TOKEN", default=None)
+
+# REDIS
+REDIS_HOST = config("REDIS_HOST", default="redis")
+REDIS_PASSWORD = config("REDIS_PASSWORD", default=None)
+
+TELEGRAM_PROXY_URL = config("TELEGRAM_PROXY_URL", default=None)
+
+# CRYPTO FORWARDING
+CRYPTO_FORWARDING_MODE = config("CRYPTO_FORWARDING_MODE", default=False, cast=bool)
+
+BTC_FORWARDING_ADDRESS = config("BTC_FORWARDING_ADDRESS", default=None)
+LTC_FORWARDING_ADDRESS = config("LTC_FORWARDING_ADDRESS", default=None)
+ETH_FORWARDING_ADDRESS = config("ETH_FORWARDING_ADDRESS", default=None)
+SOL_FORWARDING_ADDRESS = config("SOL_FORWARDING_ADDRESS", default=None)
+BNB_FORWARDING_ADDRESS = config("BNB_FORWARDING_ADDRESS", default=None)
+DOGE_FORWARDING_ADDRESS = config("DOGE_FORWARDING_ADDRESS", default=None)
+
+# REFERRAL SYSTEM
+MIN_REFERRER_TOTAL_DEPOSIT = config("MIN_REFERRER_TOTAL_DEPOSIT", default=500, cast=int)
+
+REFERRAL_BONUS_PERCENT = config("REFERRAL_BONUS_PERCENT", default=5, cast=float)
+REFERRAL_BONUS_DEPOSIT_LIMIT = config("REFERRAL_BONUS_DEPOSIT_LIMIT", default=3, cast=int)
+
+REFERRER_BONUS_PERCENT = config("REFERRER_BONUS_PERCENT", default=3, cast=float)
+REFERRER_BONUS_DEPOSIT_LIMIT = config("REFERRER_BONUS_DEPOSIT_LIMIT", default=5, cast=int)
+
+REFERRAL_BONUS_CAP_PERCENT = config("REFERRAL_BONUS_CAP_PERCENT", default=7, cast=float)
+REFERRER_BONUS_CAP_PERCENT = config("REFERRER_BONUS_CAP_PERCENT", default=7, cast=float)
+TOTAL_BONUS_CAP_PERCENT = config("TOTAL_BONUS_CAP_PERCENT", default=12, cast=float)
+
 # SQLADMIN
-SQLADMIN_RAW_PASSWORD = os.environ.get("SQLADMIN_RAW_PASSWORD")
+SQLADMIN_RAW_PASSWORD = config("SQLADMIN_RAW_PASSWORD")
 SQLADMIN_HASHED_PASSWORD = hash_password(SQLADMIN_RAW_PASSWORD)
-JWT_EXPIRE_MINUTES = int(os.environ.get("JWT_EXPIRE_MINUTES", "30"))
-JWT_ALGORITHM = os.environ.get("JWT_ALGORITHM", "HS256")
-JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY")
+
+# JWT
+JWT_EXPIRE_MINUTES = config("JWT_EXPIRE_MINUTES", default=30, cast=int)
+JWT_ALGORITHM = config("JWT_ALGORITHM", default="HS256")
+JWT_SECRET_KEY = config("JWT_SECRET_KEY")
+
+# DOWNLOAD SERVICE
+API_URL = config("API_URL", default="https://api.univel.uz")
+API_KEY = config("API_KEY", default="d8137404-8685-4182-89b8-11c6a71ab548")
